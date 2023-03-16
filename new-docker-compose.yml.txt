@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  mockoon:
+    build:
+      context: ./mockoon_server
+      dockerfile: Dockerfile
+    container_name: mockoon-cli
+    ports:
+      -"3000:3000"  
+    networks:
+      - my-network
+    restart: always  
+  
+  app:
+    build:
+      context: ./express_server
+      dockerfile: Dockerfile
+    container_name: express
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mockoon
+    networks:
+      - my-network
+    restart: always
+
+networks:
+     my-network:
+      driver: bridge
